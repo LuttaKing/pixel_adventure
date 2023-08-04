@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:ui';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
@@ -54,17 +55,26 @@ class PixelAdventure extends FlameGame with HasKeyboardHandlerComponents, DragCa
   }
 
   void updateJoystick() {
-    // switch (joystick.direction) {
-    //   case JoystickDirection.left:
-    //     player.horizontalMovement=-1;
-    //     break;
+    if (Platform.isAndroid) {
+        switch (joystick.direction) {
+      case JoystickDirection.left:
+        player.horizontalMovement=-1;
+        break;
       
-    //   case JoystickDirection.right:
-    //     player.horizontalMovement=1;
-    //     break;
-    //   default:
-    //     player.horizontalMovement=0;
-    //     break;
-    // }
+      case JoystickDirection.right:
+        player.horizontalMovement=1;
+        break;
+      case JoystickDirection.up:
+        player.hasJumped=true;
+        break;
+      default:
+        player.horizontalMovement=0;
+        player.hasJumped=false;
+        
+        
+        break;
+    }
+    }
+  
   }
 }
