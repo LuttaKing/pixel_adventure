@@ -2,10 +2,14 @@ import 'dart:async';
 
 import 'package:flame/components.dart';
 import 'package:flame_tiled/flame_tiled.dart';
+import 'package:pixel_adventure/components/background_tile.dart';
 import 'package:pixel_adventure/components/collision_block.dart';
+import 'package:pixel_adventure/components/fruit.dart';
 import 'package:pixel_adventure/components/player.dart';
+import 'package:pixel_adventure/components/saw.dart';
+import 'package:pixel_adventure/pixel_adventure.dart';
 
-class Level extends World {
+class Level extends World with HasGameRef<PixelAdventure> {
   final String levelName;
   final Player player;
 
@@ -18,6 +22,39 @@ class Level extends World {
     level = await TiledComponent.load('$levelName.tmx', Vector2.all(16));
 
     add(level);
+
+    _scrollingBackGround();
+    _spawningObjects();
+    _addCollisions();
+
+    return super.onLoad();
+  }
+
+  void _scrollingBackGround() {
+    final backGroundLayer = level.tileMap.getLayer('Background');
+
+    const tileSize = 64;
+    final numTilesY = (game.size.y / tileSize).floor();
+    final numTilesX = (game.size.x / tileSize).floor();
+
+    if (backGroundLayer != null) {
+      final backGroundColor =
+          backGroundLayer.properties.getValue('BackgroundColor');
+
+      for (double y = 0; y < game.size.y / numTilesY; y++) {
+        for (double x = 0; x < numTilesX; x++) {
+          final backGroundTile = BackgroundTile(
+            color: backGroundColor ?? 'Gray',
+            position: Vector2(x * tileSize,
+                y * tileSize - tileSize), // Vector2(0,0) means top left
+          );
+          add(backGroundTile);
+        }
+      }
+    }
+  }
+
+  void _spawningObjects() {
     final spawnPointsLayer = level.tileMap
         .getLayer<ObjectGroup>('Spawnpoints'); //layer you named in tiles
 
@@ -30,11 +67,31 @@ class Level extends World {
             add(player);
 
             break;
+          case 'Fruit': //class name from tile map
+
+            final fruit = Fruit(
+              fruit: spawnPoint.name,
+              position: Vector2(spawnPoint.x, spawnPoint.y),
+              size: Vector2(spawnPoint.width, spawnPoint.height),
+            );
+            add(fruit);
+            break;
+          case 'Saw':
+          final isVertical = spawnPoint.properties.getValue('isVertical');
+          final offNeg = spawnPoint.properties.getValue('offNeg');
+          final offPos = spawnPoint.properties.getValue('offPos');
+            final saw = Saw(
+              isVertical: isVertical,offNeg: offNeg,offPos: offPos,
+              position: Vector2(spawnPoint.x, spawnPoint.y),size:  Vector2(spawnPoint.width, spawnPoint.height),);
+            add(saw);
+            break;
           default:
         }
       }
     }
+  }
 
+  void _addCollisions() {
     final collisionsLayer = level.tileMap.getLayer<ObjectGroup>('Collisions');
     if (collisionsLayer != null) {
       // make sure layer exists
@@ -65,6 +122,5 @@ class Level extends World {
       }
     }
     player.collisionBlocks = collisionBlocks;
-    return super.onLoad();
   }
 }

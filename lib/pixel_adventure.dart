@@ -8,7 +8,7 @@ import 'package:flutter/painting.dart';
 import 'package:pixel_adventure/components/player.dart';
 import 'package:pixel_adventure/components/levels.dart';
 
-class PixelAdventure extends FlameGame with HasKeyboardHandlerComponents, DragCallbacks {
+class PixelAdventure extends FlameGame with HasKeyboardHandlerComponents, DragCallbacks, HasCollisionDetection {
   @override
   Color backgroundColor() => const Color(0xFF211f30);
 
@@ -36,7 +36,7 @@ class PixelAdventure extends FlameGame with HasKeyboardHandlerComponents, DragCa
 
   @override
   void update(double dt) {
-    updateJoystick();
+    // updateJoystick();
     super.update(dt);
   }
 
