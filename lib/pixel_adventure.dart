@@ -13,7 +13,7 @@ class PixelAdventure extends FlameGame with HasKeyboardHandlerComponents, DragCa
   Color backgroundColor() => const Color(0xFF211f30);
 
   late final CameraComponent cam;
-  Player player = Player(character: 'Mask Dude');
+  Player player = Player(character: 'Ninja Frog');
   late JoystickComponent joystick;
   bool showJoystick = false;
 

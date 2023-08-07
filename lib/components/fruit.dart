@@ -52,6 +52,7 @@ class Fruit extends SpriteAnimationComponent
           ));
       _collected = true;
     }
+    
     Future.delayed(const Duration(milliseconds: 400),(){
 removeFromParent();
     });

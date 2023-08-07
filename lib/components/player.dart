@@ -4,6 +4,7 @@ import 'dart:async';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/src/services/keyboard_key.g.dart';
 import 'package:flutter/src/services/raw_keyboard.dart';
 import 'package:pixel_adventure/components/collision_block.dart';
@@ -52,21 +53,37 @@ class Player extends SpriteAnimationGroupComponent
 
   CustomHitbox hitbox =
       CustomHitbox(offsetX: 10, offsetY: 4, width: 14, height: 28);
+  late AudioPool pool;
 
   @override
-  FutureOr<void> onLoad() {
+  FutureOr<void> onLoad() async {
     _loadAllAnimations(); //my custom
     startingPosition = Vector2(position.x, position.y);
     add(RectangleHitbox(
         position: Vector2(hitbox.offsetX, hitbox.offsetY),
         size: Vector2(hitbox.width, hitbox.height)));
+
+    pool = await FlameAudio.createPool(
+      'sfx/fire_2.mp3',
+      minPlayers: 3,
+      maxPlayers: 4,
+    );
     return super.onLoad();
+  }
+
+  void fireOne() {
+    FlameAudio.play('sfx/fire_1.mp3');
+  }
+
+  void fireTwo() {
+    pool.start();
   }
 
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     if (other is Fruit) {
       other.collidedWithPlayer();
+      
     }
     if (other is Saw) {
       _respawn();
@@ -173,6 +190,7 @@ class Player extends SpriteAnimationGroupComponent
   }
 
   void _playerJump(double dt) {
+    fireOne(); // sound
     velocity.y = -_jumpForce;
     position.y += velocity.y * dt;
     isOnGround = false;
@@ -257,9 +275,9 @@ class Player extends SpriteAnimationGroupComponent
       Future.delayed(appearingDuration, () {
         // velocity = Vector2.zero();
         position = startingPosition;
+        fireTwo();//sound
         _updatePlayerState();
-                Future.delayed(canMoveDuration, () => gotHit = false);
-
+        Future.delayed(canMoveDuration, () => gotHit = false);
       });
     });
   }

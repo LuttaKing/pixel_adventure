@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flame/components.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 import 'package:pixel_adventure/components/background_tile.dart';
 import 'package:pixel_adventure/components/collision_block.dart';
@@ -27,8 +28,19 @@ class Level extends World with HasGameRef<PixelAdventure> {
     _spawningObjects();
     _addCollisions();
 
+    
+    // startBgmMusic();
+
     return super.onLoad();
   }
+
+  void startBgmMusic() {
+    FlameAudio.bgm.initialize();
+    FlameAudio.bgm.play('music/bg_music.ogg',volume: 0.3);
+  }
+
+   
+
 
   void _scrollingBackGround() {
     final backGroundLayer = level.tileMap.getLayer('Background');
