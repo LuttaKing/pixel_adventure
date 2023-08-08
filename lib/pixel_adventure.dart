@@ -1,20 +1,26 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'dart:async';
-import 'dart:io';
-import 'dart:ui';
+
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
+import 'package:flame/input.dart';
+import 'package:flame/palette.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:pixel_adventure/components/player.dart';
 import 'package:pixel_adventure/components/levels.dart';
 
-class PixelAdventure extends FlameGame with HasKeyboardHandlerComponents, DragCallbacks, HasCollisionDetection {
+class PixelAdventure extends FlameGame
+    with HasKeyboardHandlerComponents, DragCallbacks, HasCollisionDetection {
   @override
   Color backgroundColor() => const Color(0xFF211f30);
 
   late final CameraComponent cam;
   Player player = Player(character: 'Ninja Frog');
-  late JoystickComponent joystick;
+  late JoystickComponent directionJoystick;
+
   bool showJoystick = false;
 
   @override
@@ -41,9 +47,10 @@ class PixelAdventure extends FlameGame with HasKeyboardHandlerComponents, DragCa
   }
 
   void addJoystick() {
-    joystick = JoystickComponent(
+    directionJoystick = JoystickComponent(
         //knobRadius: 10, // how far knob goes
         knob: SpriteComponent(
+          
           sprite: Sprite(
             images.fromCache('HUD/Knob.png'),
           ),
@@ -51,30 +58,51 @@ class PixelAdventure extends FlameGame with HasKeyboardHandlerComponents, DragCa
         background: SpriteComponent(
             sprite: Sprite(images.fromCache('HUD/Joystick.png'))),
         margin: const EdgeInsets.only(left: 32, bottom: 32));
-    add(joystick);
+
+    final buttonComponent = ButtonComponent(
+
+      button:  SpriteComponent(
+        size: Vector2.all(64),
+        
+          sprite: Sprite(
+            images.fromCache('HUD/JumpButton.png'),
+          ),
+        ),
+      
+      buttonDown: SpriteComponent(
+        size: Vector2.all(96),
+        
+          sprite: Sprite(
+            images.fromCache('HUD/JumpButton.png'),
+          ),
+        ),
+        position: Vector2(size.x-80, size.y - 80),
+      onPressed: () {
+        player.hasJumped=true;
+      },
+    );
+
+    addAll([directionJoystick, buttonComponent]);
   }
 
   void updateJoystick() {
-    if (Platform.isAndroid) {
-        switch (joystick.direction) {
+    switch (directionJoystick.direction) {
       case JoystickDirection.left:
-        player.horizontalMovement=-1;
+      case JoystickDirection.downLeft:
+      case JoystickDirection.upLeft:
+        player.horizontalMovement = -1;
         break;
-      
+
       case JoystickDirection.right:
-        player.horizontalMovement=1;
+      case JoystickDirection.downRight:
+      case JoystickDirection.upRight:
+        player.horizontalMovement = 1;
         break;
-      case JoystickDirection.up:
-        player.hasJumped=true;
-        break;
+
       default:
-        player.horizontalMovement=0;
-        player.hasJumped=false;
-        
-        
+        player.horizontalMovement = 0;
+
         break;
     }
-    }
-  
   }
 }

@@ -11,11 +11,6 @@ class Fruit extends SpriteAnimationComponent
   Fruit({this.fruit = 'Bananas', position, size})
       : super(position: position, size: size);
 
-  @override
-  void update(double dt) {
-    // TODO: implement update
-    super.update(dt);
-  }
 
   bool _collected = false;
   final double stepTime = 0.05;
@@ -25,6 +20,7 @@ class Fruit extends SpriteAnimationComponent
   FutureOr<void> onLoad() {
     priority = -1; // put behind layer of player
 
+//add hitbox
     add(RectangleHitbox(
         position: Vector2(hitbox.offsetX, hitbox.offsetY),
         size: Vector2(hitbox.width, hitbox.height),
