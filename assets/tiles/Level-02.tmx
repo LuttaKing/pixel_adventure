@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="40" height="23" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="111">
+<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="40" height="23" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="115">
  <tileset firstgid="1" source="Pixel Adventure.tsx"/>
  <layer id="1" name="Background" width="40" height="23">
   <properties>
@@ -15,9 +15,9 @@
 24,25,41,41,41,41,42,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,111,24,24,
 24,25,0,0,0,0,0,0,0,0,95,96,96,96,96,96,96,97,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7,8,9,111,24,24,
 24,25,0,0,0,0,0,0,0,0,117,118,118,118,118,118,140,141,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,29,30,31,111,24,24,
-24,25,0,0,0,0,0,0,0,0,117,118,118,118,118,119,0,0,0,0,0,7,8,8,8,8,9,0,0,0,0,0,0,0,29,30,35,111,24,24,
+24,25,0,0,0,0,0,0,0,0,117,120,121,118,118,119,0,0,0,0,0,7,8,8,8,8,9,0,0,0,0,0,0,0,29,30,35,111,24,24,
 24,25,0,0,0,0,0,0,0,0,117,118,118,118,118,119,0,0,0,0,0,29,30,30,30,30,31,0,0,0,0,0,0,0,51,52,53,111,24,24,
-24,25,41,41,42,0,0,0,0,0,13,14,15,216,118,118,96,97,0,0,0,29,30,30,30,30,31,0,0,0,0,0,0,0,150,151,152,111,24,24,
+24,25,41,41,42,0,0,0,0,0,13,14,15,118,118,118,96,97,0,0,0,29,30,30,30,30,31,0,0,0,0,0,0,0,150,151,152,111,24,24,
 24,25,0,0,0,0,0,0,0,0,139,140,140,140,140,140,140,141,0,0,0,29,30,30,30,30,31,0,0,0,0,0,0,0,0,0,0,111,24,24,
 24,25,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,29,30,30,30,8,9,41,42,0,0,0,0,0,0,0,0,111,24,24,
 24,25,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,29,30,30,30,30,31,0,0,0,0,0,0,0,0,0,0,111,24,24,
@@ -70,12 +70,14 @@
   <object id="82" name="Bananas" type="Fruit" x="32" y="144" width="32" height="32"/>
   <object id="107" type="Rockhead" x="144" y="28" width="32" height="32">
    <properties>
-    <property name="offNeg" type="float" value="2"/>
+    <property name="downNeg" type="float" value="0"/>
+    <property name="downPos" type="float" value="4"/>
+    <property name="offNeg" type="float" value="4"/>
     <property name="offPos" type="float" value="2"/>
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="4" name="Collisions">
+ <objectgroup id="4" name="Collisions" visible="0">
   <object id="84" x="336" y="144" width="96" height="192"/>
   <object id="85" x="32" y="272" width="80" height="48"/>
   <object id="88" x="32" y="16" width="576" height="16"/>

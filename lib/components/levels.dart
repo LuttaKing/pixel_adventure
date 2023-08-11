@@ -90,8 +90,10 @@ class Level extends World with HasGameRef<PixelAdventure> {
           case 'Rockhead': //class name from tile map
  final offNeg = spawnPoint.properties.getValue('offNeg');
           final offPos = spawnPoint.properties.getValue('offPos');
+           final downNeg = spawnPoint.properties.getValue('downNeg');
+          final downPos = spawnPoint.properties.getValue('downPos');
             final rockHead = Rockhead(
-             offNeg: offNeg,offPos: offPos,
+             offNeg: offNeg,offPos: offPos,downNeg: downNeg,downPos: downPos,
               position: Vector2(spawnPoint.x, spawnPoint.y),
               size: Vector2(spawnPoint.width, spawnPoint.height),
             );

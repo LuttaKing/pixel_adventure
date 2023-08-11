@@ -10,6 +10,7 @@ import 'package:flutter/src/services/raw_keyboard.dart';
 import 'package:pixel_adventure/components/collision_block.dart';
 import 'package:pixel_adventure/components/custom_hitbox.dart';
 import 'package:pixel_adventure/components/fruit.dart';
+import 'package:pixel_adventure/components/rockHead.dart';
 import 'package:pixel_adventure/components/saw.dart';
 import 'package:pixel_adventure/components/utils.dart';
 import 'package:pixel_adventure/pixel_adventure.dart';
@@ -71,13 +72,13 @@ class Player extends SpriteAnimationGroupComponent
     return super.onLoad();
   }
 
-  void fireOne() {
-    FlameAudio.play('sfx/fire_1.mp3');
-  }
+  // void fireOne() {
+  //   FlameAudio.play('sfx/fire_1.mp3');
+  // }
 
-  void fireTwo() {
-    pool.start();
-  }
+  // void fireTwo() {
+  //   pool.start();
+  // }
 
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
@@ -85,7 +86,7 @@ class Player extends SpriteAnimationGroupComponent
       other.collidedWithPlayer();
       
     }
-    if (other is Saw) {
+    if (other is Saw || other is Rockhead) {
       _respawn();
     }
     super.onCollision(intersectionPoints, other);
@@ -190,7 +191,7 @@ class Player extends SpriteAnimationGroupComponent
   }
 
   void _playerJump(double dt) {
-    fireOne(); // sound
+    // fireOne(); // sound
     velocity.y = -_jumpForce;
     position.y += velocity.y * dt;
     isOnGround = false;
@@ -273,9 +274,9 @@ class Player extends SpriteAnimationGroupComponent
       position = startingPosition - Vector2.all(32);
       current = PlayerState.appearing;
       Future.delayed(appearingDuration, () {
-        // velocity = Vector2.zero();
+        velocity = Vector2.zero();
         position = startingPosition;
-        fireTwo();//sound
+        // fireTwo();//sound
         _updatePlayerState();
         Future.delayed(canMoveDuration, () => gotHit = false);
       });
