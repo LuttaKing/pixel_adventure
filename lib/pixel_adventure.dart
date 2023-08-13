@@ -27,6 +27,7 @@ class PixelAdventure extends FlameGame
     // load all images to cache
     await images.loadAllImages(); // dont do thiss with lots of images, time
     final world = Level(levelName: 'Level-02', player: player);
+
     cam = CameraComponent.withFixedResolution(
         world: world,
         width: 640, // defined in Tiled
@@ -34,6 +35,9 @@ class PixelAdventure extends FlameGame
 
     cam.viewfinder.anchor = Anchor.topLeft; //camera position
     addAll([cam, world]);
+
+    // cam.setBounds(Map.bounds);
+    cam.follow(Player(), maxSpeed: 250);
     addJoystick();
 
     return super.onLoad();
@@ -49,7 +53,6 @@ class PixelAdventure extends FlameGame
     directionJoystick = JoystickComponent(
         //knobRadius: 10, // how far knob goes
         knob: SpriteComponent(
-          
           sprite: Sprite(
             images.fromCache('HUD/Knob.png'),
           ),
@@ -59,25 +62,21 @@ class PixelAdventure extends FlameGame
         margin: const EdgeInsets.only(left: 32, bottom: 32));
 
     final buttonComponent = ButtonComponent(
-
-      button:  SpriteComponent(
+      button: SpriteComponent(
         size: Vector2.all(64),
-        
-          sprite: Sprite(
-            images.fromCache('HUD/JumpButton.png'),
-          ),
+        sprite: Sprite(
+          images.fromCache('HUD/JumpButton.png'),
         ),
-      
+      ),
       buttonDown: SpriteComponent(
         size: Vector2.all(96),
-        
-          sprite: Sprite(
-            images.fromCache('HUD/JumpButton.png'),
-          ),
+        sprite: Sprite(
+          images.fromCache('HUD/JumpButton.png'),
         ),
-        position: Vector2(size.x-80, size.y - 80),
+      ),
+      position: Vector2(size.x - 80, size.y - 80),
       onPressed: () {
-        player.hasJumped=true;
+        player.hasJumped = true;
       },
     );
 

@@ -71,7 +71,7 @@
   <object id="107" type="Rockhead" x="144" y="28" width="32" height="32">
    <properties>
     <property name="downNeg" type="float" value="0"/>
-    <property name="downPos" type="float" value="4"/>
+    <property name="downPos" type="float" value="2.5"/>
     <property name="offNeg" type="float" value="4"/>
     <property name="offPos" type="float" value="2"/>
    </properties>

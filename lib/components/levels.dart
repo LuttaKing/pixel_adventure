@@ -66,8 +66,7 @@ class Level extends World with HasGameRef<PixelAdventure> {
   }
 
   void _spawningObjects() {
-    final spawnPointsLayer = level.tileMap
-        .getLayer<ObjectGroup>('Spawnpoints'); //layer you named in tiles
+    final spawnPointsLayer = level.tileMap.getLayer<ObjectGroup>('Spawnpoints'); //layer you named in tiles
 
     if (spawnPointsLayer != null) {
       for (final spawnPoint in spawnPointsLayer.objects) {
@@ -88,9 +87,9 @@ class Level extends World with HasGameRef<PixelAdventure> {
             add(fruit);
             break;
           case 'Rockhead': //class name from tile map
- final offNeg = spawnPoint.properties.getValue('offNeg');
+          final offNeg = spawnPoint.properties.getValue('offNeg');
           final offPos = spawnPoint.properties.getValue('offPos');
-           final downNeg = spawnPoint.properties.getValue('downNeg');
+          final downNeg = spawnPoint.properties.getValue('downNeg');
           final downPos = spawnPoint.properties.getValue('downPos');
             final rockHead = Rockhead(
              offNeg: offNeg,offPos: offPos,downNeg: downNeg,downPos: downPos,

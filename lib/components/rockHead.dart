@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:flutter/foundation.dart';
 import 'package:pixel_adventure/components/custom_hitbox.dart';
 import 'package:pixel_adventure/pixel_adventure.dart';
 
@@ -38,6 +37,7 @@ class Rockhead extends SpriteAnimationGroupComponent
 
   double rangeNeg2 = 0;
   double rangePos2 = 0;
+
 
   bool movingHorizontally = true;
   bool bottomHit = false;
@@ -131,4 +131,6 @@ class Rockhead extends SpriteAnimationGroupComponent
       position.y += moveDirection * moveSpeed * dt;
     }
   }
+
+
 }
