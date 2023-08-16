@@ -4,6 +4,7 @@ import 'package:flame/components.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 import 'package:pixel_adventure/components/background_tile.dart';
+import 'package:pixel_adventure/components/checkpoint.dart';
 import 'package:pixel_adventure/components/collision_block.dart';
 import 'package:pixel_adventure/components/fruit.dart';
 import 'package:pixel_adventure/components/player.dart';
@@ -29,7 +30,6 @@ class Level extends World with HasGameRef<PixelAdventure> {
     _spawningObjects();
     _addCollisions();
 
-    
     // startBgmMusic();
 
     return super.onLoad();
@@ -37,36 +37,26 @@ class Level extends World with HasGameRef<PixelAdventure> {
 
   void startBgmMusic() {
     FlameAudio.bgm.initialize();
-    FlameAudio.bgm.play('music/bg_music.ogg',volume: 0.3);
+    FlameAudio.bgm.play('music/bg_music.ogg', volume: 0.3);
   }
 
-
   void _scrollingBackGround() {
-    final backGroundLayer = level.tileMap.getLayer('Background');
+    final backgroundLayer = level.tileMap.getLayer('Background');
 
-    const tileSize = 64;
-    final numTilesY = (game.size.y / tileSize).floor();
-    final numTilesX = (game.size.x / tileSize).floor();
-
-    if (backGroundLayer != null) {
-      final backGroundColor =
-          backGroundLayer.properties.getValue('BackgroundColor');
-
-      for (double y = 0; y < game.size.y / numTilesY; y++) {
-        for (double x = 0; x < numTilesX; x++) {
-          final backGroundTile = BackgroundTile(
-            color: backGroundColor ?? 'Gray',
-            position: Vector2(x * tileSize,
-                y * tileSize - tileSize), // Vector2(0,0) means top left
-          );
-          add(backGroundTile);
-        }
-      }
+    if (backgroundLayer != null) {
+      final backgroundColor =
+          backgroundLayer.properties.getValue('BackgroundColor');
+      final backgroundTile = BackgroundTile(
+        color: backgroundColor ?? 'Gray',
+        position: Vector2(0, 0),
+      );
+      add(backgroundTile);
     }
   }
 
   void _spawningObjects() {
-    final spawnPointsLayer = level.tileMap.getLayer<ObjectGroup>('Spawnpoints'); //layer you named in tiles
+    final spawnPointsLayer = level.tileMap
+        .getLayer<ObjectGroup>('Spawnpoints'); //layer you named in tiles
 
     if (spawnPointsLayer != null) {
       for (final spawnPoint in spawnPointsLayer.objects) {
@@ -74,6 +64,7 @@ class Level extends World with HasGameRef<PixelAdventure> {
           case 'Player': //class name from tile map
 
             player.position = Vector2(spawnPoint.x, spawnPoint.y);
+            player.scale.x = 1; //face right
             add(player);
 
             break;
@@ -87,26 +78,42 @@ class Level extends World with HasGameRef<PixelAdventure> {
             add(fruit);
             break;
           case 'Rockhead': //class name from tile map
-          final offNeg = spawnPoint.properties.getValue('offNeg');
-          final offPos = spawnPoint.properties.getValue('offPos');
-          final downNeg = spawnPoint.properties.getValue('downNeg');
-          final downPos = spawnPoint.properties.getValue('downPos');
+            final offNeg = spawnPoint.properties.getValue('offNeg');
+            final offPos = spawnPoint.properties.getValue('offPos');
+            final downNeg = spawnPoint.properties.getValue('downNeg');
+            final downPos = spawnPoint.properties.getValue('downPos');
             final rockHead = Rockhead(
-             offNeg: offNeg,offPos: offPos,downNeg: downNeg,downPos: downPos,
+              offNeg: offNeg,
+              offPos: offPos,
+              downNeg: downNeg,
+              downPos: downPos,
               position: Vector2(spawnPoint.x, spawnPoint.y),
               size: Vector2(spawnPoint.width, spawnPoint.height),
             );
             add(rockHead);
             break;
           case 'Saw':
-          final isVertical = spawnPoint.properties.getValue('isVertical');
-          final offNeg = spawnPoint.properties.getValue('offNeg');
-          final offPos = spawnPoint.properties.getValue('offPos');
+            final isVertical = spawnPoint.properties.getValue('isVertical');
+            final offNeg = spawnPoint.properties.getValue('offNeg');
+            final offPos = spawnPoint.properties.getValue('offPos');
             final saw = Saw(
-              isVertical: isVertical,offNeg: offNeg,offPos: offPos,
-              position: Vector2(spawnPoint.x, spawnPoint.y),size:  Vector2(spawnPoint.width, spawnPoint.height),);
+              isVertical: isVertical,
+              offNeg: offNeg,
+              offPos: offPos,
+              position: Vector2(spawnPoint.x, spawnPoint.y),
+              size: Vector2(spawnPoint.width, spawnPoint.height),
+            );
             add(saw);
             break;
+
+          case 'CheckPoint':
+            final checkpoint = Checkpoint(
+              position: Vector2(spawnPoint.x, spawnPoint.y),
+              size: Vector2(spawnPoint.width, spawnPoint.height),
+            );
+            add(checkpoint);
+            break;
+
           default:
         }
       }
