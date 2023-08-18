@@ -21,7 +21,7 @@ class PixelAdventure extends FlameGame
   late JoystickComponent directionJoystick;
 
   bool showControls = false;
-  List<String> levelNames = ['Level-01', 'Level-02'];
+  List<String> levelNames = ['Level-02', 'Level-01'];
   int currentLevelIndex = 0;
 
   @override

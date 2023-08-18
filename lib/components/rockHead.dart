@@ -32,12 +32,12 @@ class Rockhead extends SpriteAnimationGroupComponent
   static const tileSize = 16;
 
   double moveDirection = 1;
+
   double rangeNeg = 0;
   double rangePos = 0;
 
   double rangeNeg2 = 0;
   double rangePos2 = 0;
-
 
   bool movingHorizontally = true;
   bool bottomHit = false;
@@ -67,8 +67,8 @@ class Rockhead extends SpriteAnimationGroupComponent
         SpriteAnimationData.sequenced(
             amount: 1, // amount of sprites
             stepTime: 0.5, // fps 20fps is 0.05, given by assets owner
-            textureSize: Vector2.all(42) // size of png
-            ));
+            textureSize: Vector2.all(42), // size of png
+            loop: false));
 
     bottomHitAnimation = SpriteAnimation.fromFrameData(
         game.images.fromCache('Traps/Rock Head/Bottom Hit (42x42).png'),
@@ -106,15 +106,22 @@ class Rockhead extends SpriteAnimationGroupComponent
     }
   }
 
-  void _moveVerticaly(double dt) {
+  void _moveVerticaly(double dt) async {
     if (position.y >= rangePos2) {
-      //move down
-      moveDirection = -1;
+         moveDirection = -1;// go up
       bottomHit = true;
+      current = RockState.bottomHit;
+      await animationTicker?.completed;
+      animationTicker?.reset(); //reset animation if we will use it agoin
+
+   
+
       current = RockState.idle;
     } else if (position.y <= rangeNeg2) {
-      current = RockState.bottomHit;
       moveDirection = 1;
+
+      current = RockState.idle;
+
       if (bottomHit) {
         movingHorizontally = true;
       }
@@ -131,6 +138,4 @@ class Rockhead extends SpriteAnimationGroupComponent
       position.y += moveDirection * moveSpeed * dt;
     }
   }
-
-
 }
