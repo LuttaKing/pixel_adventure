@@ -7,6 +7,7 @@ import 'package:flame/components.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/src/services/keyboard_key.g.dart';
 import 'package:flutter/src/services/raw_keyboard.dart';
+import 'package:pixel_adventure/components/bullet_component.dart';
 import 'package:pixel_adventure/components/checkpoint.dart';
 import 'package:pixel_adventure/components/collision_block.dart';
 import 'package:pixel_adventure/components/custom_hitbox.dart';
@@ -33,7 +34,7 @@ class Player extends SpriteAnimationGroupComponent
     position,
     this.character = 'Ninja Frog',
   }) : super(position: position); // pass position to be put
-
+  late TimerComponent bulletCreator;
   final double stepTime = 0.05;
   late final SpriteAnimation idleAnimation;
   late final SpriteAnimation runningAnimation;
@@ -71,10 +72,19 @@ class Player extends SpriteAnimationGroupComponent
         position: Vector2(hitbox.offsetX, hitbox.offsetY),
         size: Vector2(hitbox.width, hitbox.height)));
 
-    pool = await FlameAudio.createPool(
-      'sfx/fire_2.mp3',
-      minPlayers: 3,
-      maxPlayers: 4,
+    // pool = await FlameAudio.createPool(
+    //   'sfx/fire_2.mp3',
+    //   minPlayers: 3,
+    //   maxPlayers: 4,
+    // );
+
+    add(
+      bulletCreator = TimerComponent(
+        period: 0.05,
+        repeat: false,
+        autoStart: false,
+        onTick: _createBullet,
+      ),
     );
     return super.onLoad();
   }
@@ -144,7 +154,7 @@ class Player extends SpriteAnimationGroupComponent
 
     runningAnimation = _spriteAnimation('Run', 12);
     jumpAnimation = _spriteAnimation('Jump', 1);
-    hitAnimation = _spriteAnimation('Hit', 7)..loop=false;
+    hitAnimation = _spriteAnimation('Hit', 7)..loop = false;
     fallAnimation = _spriteAnimation('Fall', 1);
     appearingAnimation = _specialSpriteAnimation('Appearing', 7);
     disappearingAnimation = _specialSpriteAnimation('Desappearing', 7);
@@ -294,19 +304,17 @@ class Player extends SpriteAnimationGroupComponent
     animationTicker?.reset(); //reset animation if we will use it again
 
     scale.x = 1; // face right
-      position = startingPosition - Vector2.all(32);
-      current = PlayerState.appearing;
+    position = startingPosition - Vector2.all(32);
+    current = PlayerState.appearing;
 
-    await animationTicker?.completed; 
-    animationTicker?.reset(); 
+    await animationTicker?.completed;
+    animationTicker?.reset();
 
     velocity = Vector2.zero();
-        position = startingPosition;
-        // fireTwo();//sound
-        _updatePlayerState();
-        Future.delayed(canMoveDuration, () => gotHit = false);
-
-  
+    position = startingPosition;
+    // fireTwo();//sound
+    _updatePlayerState();
+    Future.delayed(canMoveDuration, () => gotHit = false);
   }
 
   void _reachedCheckPoint() {
@@ -328,5 +336,21 @@ class Player extends SpriteAnimationGroupComponent
         game.loadNextLevel();
       });
     });
+  }
+
+  void _createBullet() {
+    final bullet = BulletComponent(
+      position: Vector2.zero() ,
+      angle: 0.0,
+    );
+    add(bullet);
+  }
+
+  void beginFire() {
+    bulletCreator.timer.start();
+  }
+
+  void stopFire() {
+    bulletCreator.timer.pause();
   }
 }

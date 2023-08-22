@@ -74,6 +74,7 @@ flutter:
     - assets/images/HUD/
     - assets/images/Items/Fruits/
     - assets/images/Traps/Saw/
+    - assets/images/Traps/Sand Mud Ice/
     - assets/images/Traps/Rock Head/
     - assets/images/Items/Checkpoints/Checkpoint/
     - assets/audio/sfx/
