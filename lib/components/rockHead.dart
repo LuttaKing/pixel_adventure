@@ -25,7 +25,7 @@ class Rockhead extends SpriteAnimationGroupComponent
       size})
       : super(position: position, size: size);
 
-  final double stepTime = 0.06;
+  final double stepTime = 0.05;
   late final SpriteAnimation idleAnimation;
   late final SpriteAnimation bottomHitAnimation;
   static const moveSpeed = 50;

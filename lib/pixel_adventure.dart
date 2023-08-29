@@ -6,6 +6,7 @@ import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:pixel_adventure/components/jump_button.dart';
@@ -35,6 +36,7 @@ class PixelAdventure extends FlameGame
     await images.loadAllImages(); // dont do thiss with lots of images, time
     _loadLevel();
 
+if(!kIsWeb)
     addControls();
 
     return super.onLoad();

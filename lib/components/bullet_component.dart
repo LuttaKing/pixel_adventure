@@ -6,7 +6,7 @@ class BulletComponent extends SpriteComponent with HasGameRef, CollisionCallback
       : super(size: size);
 
   static const speed = 500.0;
-  late final Vector2 velocity;
+  late final Vector2 _velocity;
   final Vector2 deltaPosition = Vector2.zero();
 
  
@@ -20,7 +20,7 @@ class BulletComponent extends SpriteComponent with HasGameRef, CollisionCallback
       game.images.fromCache('Traps/Sand Mud Ice/Sand Particle.png'),
     );
 
-    velocity = Vector2(1, 0,)
+    _velocity = Vector2(1, 0,)
       ..rotate(angle)
       ..scale(speed);
   }
@@ -29,7 +29,7 @@ class BulletComponent extends SpriteComponent with HasGameRef, CollisionCallback
   void update(double dt) {
     super.update(dt);
     deltaPosition
-       ..setFrom(velocity)
+       ..setFrom(_velocity)
        ..scale(dt)
       ;
     position += deltaPosition;
