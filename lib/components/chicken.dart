@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:pixel_adventure/components/custom_hitbox.dart';
 import 'package:pixel_adventure/components/player.dart';
 import 'package:pixel_adventure/pixel_adventure.dart';
 
@@ -28,25 +29,36 @@ class Chicken extends SpriteAnimationGroupComponent
   double rangePos = 0;
   double moveDirection = 1; // right
   double targetDirection = -1;
+  bool gotStomped = false;
 
   static const tileSize = 16;
   static const runSpeed = 80;
+  static const _bounceHeight = 260.0;
   final Vector2 _velocity = Vector2.zero();
 
   @override
   FutureOr<void> onLoad() {
     debugMode = true;
     player = game.player;
+
     _loadAllAnimation();
     _calculateRange();
+
+    add(RectangleHitbox(
+        position: Vector2(4, 6),
+        size: Vector2(24, 26),
+        collisionType: CollisionType.passive));
 
     return super.onLoad();
   }
 
   @override
   void update(double dt) {
-    _updateState();
-    _movement(dt);
+    if (!gotStomped) {
+      _updateState();
+      _movement(dt);
+    }
+
     super.update(dt);
   }
 
@@ -110,6 +122,20 @@ class Chicken extends SpriteAnimationGroupComponent
     if ((moveDirection > 0 && scale.x > 0) ||
         moveDirection < 0 && scale.x < 0) {
       flipHorizontallyAroundCenter();
+    }
+  }
+
+  void collidedWPlayer() async {
+    //if stomped
+    if (player.velocity.y > 0 && player.y + player.height > position.y) {
+      //if player is falling &&
+      gotStomped = true;
+      current = ChickenState.hit;
+      player.velocity.y = -_bounceHeight; //player bounce
+      await animationTicker?.completed;
+      removeFromParent();
+    } else {
+      player.collidedWithEnemy();
     }
   }
 }

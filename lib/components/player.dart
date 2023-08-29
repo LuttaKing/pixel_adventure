@@ -9,6 +9,7 @@ import 'package:flutter/src/services/keyboard_key.g.dart';
 import 'package:flutter/src/services/raw_keyboard.dart';
 import 'package:pixel_adventure/components/bullet_component.dart';
 import 'package:pixel_adventure/components/checkpoint.dart';
+import 'package:pixel_adventure/components/chicken.dart';
 import 'package:pixel_adventure/components/collision_block.dart';
 import 'package:pixel_adventure/components/custom_hitbox.dart';
 import 'package:pixel_adventure/components/fruit.dart';
@@ -106,6 +107,9 @@ class Player extends SpriteAnimationGroupComponent
       }
       if (other is Saw || other is Rockhead) {
         _respawn();
+      }
+      if (other is Chicken) {
+        other.collidedWPlayer();
       }
       if (other is Checkpoint) {
         _reachedCheckPoint();
@@ -340,7 +344,7 @@ class Player extends SpriteAnimationGroupComponent
 
   void _createBullet() {
     final bullet = BulletComponent(
-      position: Vector2.zero() ,
+      position: Vector2.zero(),
       angle: 0.0,
     );
     add(bullet);
@@ -352,5 +356,9 @@ class Player extends SpriteAnimationGroupComponent
 
   void stopFire() {
     bulletCreator.timer.pause();
+  }
+
+  void collidedWithEnemy() {
+    _respawn();
   }
 }
