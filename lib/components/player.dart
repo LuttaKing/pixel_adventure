@@ -33,7 +33,7 @@ class Player extends SpriteAnimationGroupComponent
   String character;
   Player({
     position,
-    this.character = 'Ninja Frog',
+    this.character = 'Ninja Frog9',
   }) : super(position: position); // pass position to be put
   late TimerComponent bulletCreator;
   final double stepTime = 0.05;
