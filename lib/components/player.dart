@@ -159,7 +159,7 @@ class Player extends SpriteAnimationGroupComponent
     runningAnimation = _spriteAnimation('Run', 12);
     jumpAnimation = _spriteAnimation('Jump', 1);
     hitAnimation = _spriteAnimation('Hit', 7)..loop = false;
-    fallAnimation = _spriteAnimation('Fall', 1);
+    fallAnimation = _spriteFallAnimation('Fall2', 1);
     appearingAnimation = _specialSpriteAnimation('Appearing', 7);
     disappearingAnimation = _specialSpriteAnimation('Desappearing', 7);
 
@@ -187,6 +187,16 @@ class Player extends SpriteAnimationGroupComponent
         loop: false,
       ),
     );
+  }
+
+    SpriteAnimation _spriteFallAnimation(String state, int amount) {
+    return SpriteAnimation.fromFrameData(
+        game.images.fromCache('Main Characters/$character/$state.png'),
+        SpriteAnimationData.sequenced(
+            amount: amount, // amount of sprites
+            stepTime: stepTime, // fps 20fps is 0.05, given by assets owner
+            textureSize: Vector2.all(32) // size of png
+            ));
   }
 
   SpriteAnimation _spriteAnimation(String state, int amount) {
